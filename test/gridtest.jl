@@ -1,5 +1,6 @@
 g = CartesianGrid((2, 3, 4), (1.0, 1.0, 1.0))
-
+g2 = CartesianGrid((2, 3, 4))
+@test g == g2
 @test numCells(g) == 24
 @test numFaces(g) == 98
 @test numDirFaces(g, 1) == 36

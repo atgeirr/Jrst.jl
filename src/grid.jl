@@ -5,6 +5,8 @@ struct CartesianGrid <: AbstractGrid
     extent::Tuple{Float64, Float64, Float64}
 end
 
+CartesianGrid(dim) = CartesianGrid(dim, (1.0, 1.0, 1.0))
+
 numCells(g::CartesianGrid) = g.dim[1] * g.dim[2] * g.dim[3]
 
 mm(n) = mod(n-1, 3) + 1
@@ -73,7 +75,7 @@ function faceToEntityIJK(g::CartesianGrid, face::Integer)
         if face <= dirfaces
             dim[dir] += 1
             ijk = [linToIJK(dim, face)...]
-            ijk = 2.*ijk
+            ijk = 2ijk
             ijk[dir] -= 1
             return (ijk[1], ijk[2], ijk[3])
         else
@@ -104,6 +106,6 @@ function faceCells(g::CartesianGrid, face::Integer)
     dir = firstOdd(ijk1)
     ijk1[dir] -= 1;
     ijk2[dir] += 1;
-    eijk_cells = div.((ijk1, ijk2), 2)
+    eijk_cells = (div.(ijk1, 2), div.(ijk2, 2))
     map(x->ijkToLin(g, x), eijk_cells)
 end
